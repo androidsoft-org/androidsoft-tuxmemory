@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/container"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:id="@+id/splash"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView android:id="@+id/image_splash"
+                   android:layout_width="fill_parent"
+                   android:layout_height="wrap_content"
+                   android:gravity="center" />
+        <TextView android:id="@+id/text"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:gravity="center_horizontal|center_vertical"
+                  android:layout_marginBottom="10px"
+                  android:text="@+string/version" />
+
+        <LinearLayout android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal|center_vertical">
+
+        <Button android:id="@+id/button_play"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:verticalSpacing="20dp"
+                android:horizontalSpacing="20dp"
+                android:text="@string/button_play"/>
+
+                </LinearLayout>
+    </LinearLayout>
+
+<!--              android:columnWidth="70dp"  -->
+
+    <view  class="org.androidsoft.games.memory.tux.MemoryGridView"
+              android:layoutAnimation="@anim/layout_random_fade"
+              android:id="@+id/gridview"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:numColumns="4"
+              android:verticalSpacing="8dp"
+              android:horizontalSpacing="8dp"
+              android:stretchMode="columnWidth"
+              android:gravity="center"
+              android:visibility="gone" />
+
+</FrameLayout>
+

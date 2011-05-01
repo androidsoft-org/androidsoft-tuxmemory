@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="app_name">"Memory"</string>
+    <string name="activity_title">"Tux Memory Game"</string>
+    <string name="success_title">"Great!"</string>
+    <string name="success">Your score is {0} moves.\n\nThe high score is {1} moves.</string>
+    <string name="hiscore_title">"New High Score!</string>
+    <string name="hiscore">You\'\'ve set the new high score to {0} moves. \n\nThe old high score was {1} moves.</string>
+    <string name="new_game">"New game"</string>
+    <string name="quit">"Quit"</string>
+    <string name="button_play">"Play"</string>
+    <string name="version">"Version 1.1.1"</string>
+    <string name="ok">Ok</string>
+    <!-- What's new dialog -->
+    <string name="first_run_dialog_title">Welcome to Tux Memory Game</string>
+    <string name="first_run_dialog_message">Thanks for downloading Tux Memory Game\n\n
+    Quick start instructions :\n
+    \t• Click on the tiles and find pairs.\n
+    \n\n Enjoy it!\n
+    </string>
+    <string name="whats_new_dialog_title">What\'s new in Tux Memory Game</string>
+    <string name="whats_new_dialog_message">Thanks for upgrading Tux Memory Game\n
+    <b>New in version 1.1.1:</b>\n
+    \t• Interface now optimized for honeycomb (Android 3.0).\n
+    \t• Still no ads nor internet access required.\n
+    \n\nEnjoy it and don\'t forget to rate it to support us.
+    </string>
+    <string name="credits_menu">About</string>
+    <string name="credits_app_name">Tux Memory Game</string>
+    <string name="credits_current_version">Version 1.1.1</string>
+
+</resources>
