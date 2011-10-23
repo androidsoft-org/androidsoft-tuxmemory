@@ -1,4 +1,4 @@
-/* Copyright (c) 2010 Pierre LEVY androidsoft.org
+/* Copyright (c) 2010-2011 Pierre LEVY androidsoft.org
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -19,6 +19,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +32,7 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import org.androidsoft.games.utils.sound.SoundManager;
 
 /**
  * AbstractMainActivity
@@ -40,6 +42,7 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
 {
 
     private static final String PREF_STARTED = "started";
+    private static final int SOUND_NEW_GAME = 1000;
     private static final int SPLASH_SCREEN_ROTATION_COUNT = 2;
     private static final int SPLASH_SCREEN_ROTATION_DURATION = 2000;
     private static final int GAME_SCREEN_ROTATION_COUNT = 2;
@@ -55,6 +58,7 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
     protected abstract View getGameView();
 
     protected abstract void newGame();
+
     protected abstract void about();
 
     /**
@@ -64,6 +68,9 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
     public void onCreate(Bundle icicle)
     {
         super.onCreate(icicle);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);        
+        SoundManager.init(AbstractMainActivity.this);
+
         setContentView(R.layout.main);
         mContainer = (ViewGroup) findViewById(R.id.container);
         mSplash = (View) findViewById(R.id.splash);
@@ -73,7 +80,7 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
 
         ImageView image = (ImageView) findViewById(R.id.image_splash);
         image.setImageResource(R.drawable.splash);
-        
+
         checkLastVersion();
     }
 
@@ -96,6 +103,12 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
             mSplash.setVisibility(View.VISIBLE);
             getGameView().setVisibility(View.GONE);
         }
+
+        if (!SoundManager.isInitialized())
+        {
+            SoundManager.init(this);
+        }
+        SoundManager.instance().addSound(SOUND_NEW_GAME, R.raw.new_game);
     }
 
     /**
@@ -115,6 +128,8 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
             editor.remove(PREF_STARTED);
         }
         editor.commit();
+
+        SoundManager.release();
     }
 
     /**
@@ -124,7 +139,7 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate( R.menu.menu, menu);
+        inflater.inflate(R.menu.menu, menu);
 
         return true;
     }
@@ -138,7 +153,7 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
         switch (item.getItemId())
         {
             case R.id.menu_new:
-                newGame();
+                onNewGame();
                 return true;
             case R.id.menu_quit:
                 quit();
@@ -148,6 +163,12 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
                 return true;
         }
         return false;
+    }
+
+    private void onNewGame()
+    {
+        SoundManager.instance().playSound(SOUND_NEW_GAME);
+        newGame();
     }
 
     /**
@@ -166,15 +187,15 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
     {
         if (v == mButtonPlay)
         {
-            applyRotation(0, 0, SPLASH_SCREEN_ROTATION_COUNT * 360);
+            applyRotation(0, SPLASH_SCREEN_ROTATION_COUNT * 360);
         }
     }
 
-    protected void showEndDialog(String title , String message, int icon)
+    protected void showEndDialog(String title, String message, int icon)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
-        builder.setIcon( icon );
+        builder.setIcon(icon);
         builder.setMessage(message);
         builder.setCancelable(false);
         builder.setPositiveButton(getString(R.string.new_game),
@@ -184,7 +205,7 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
                     public void onClick(DialogInterface dialog, int id)
                     {
                         dialog.cancel();
-                        newGame();
+                        onNewGame();
                     }
                 });
         builder.setNegativeButton(getString(R.string.quit),
@@ -205,12 +226,12 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
     /**
      * Setup a new 3D rotation on the container view.
      *
-     * @param position the item that was clicked to show a picture, or -1 to show the list
      * @param start the start angle at which the rotation must begin
      * @param end the end angle of the rotation
      */
-    private void applyRotation(int position, float start, float end)
+    private void applyRotation(float start, float end)
     {
+
         // Find the center of the container
         final float centerX = mContainer.getWidth() / 2.0f;
         final float centerY = mContainer.getHeight() / 2.0f;
@@ -222,9 +243,10 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
         rotation.setDuration(SPLASH_SCREEN_ROTATION_DURATION);
         rotation.setFillAfter(true);
         rotation.setInterpolator(new AccelerateInterpolator());
-        rotation.setAnimationListener(new DisplayNextView(position));
+        rotation.setAnimationListener(new DisplayNextView());
 
         mContainer.startAnimation(rotation);
+
     }
 
     /**
@@ -235,20 +257,18 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
     private final class DisplayNextView implements Animation.AnimationListener
     {
 
-        private final int mPosition;
-
-        private DisplayNextView(int position)
+        private DisplayNextView()
         {
-            mPosition = position;
         }
 
         public void onAnimationStart(Animation animation)
         {
+            SoundManager.instance().playSound(SOUND_NEW_GAME);
         }
 
         public void onAnimationEnd(Animation animation)
         {
-            mContainer.post(new SwapViews(mPosition));
+            mContainer.post(new SwapViews());
         }
 
         public void onAnimationRepeat(Animation animation)
@@ -262,13 +282,6 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
      */
     private final class SwapViews implements Runnable
     {
-
-        private final int mPosition;
-
-        public SwapViews(int position)
-        {
-            mPosition = position;
-        }
 
         public void run()
         {
@@ -296,46 +309,45 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
         int resTitle;
         int resMessage;
         final int lastVersion = getVersion();
-        if ( lastVersion < Constants.VERSION)
+        if (lastVersion < Constants.VERSION)
         {
-            if( lastVersion == 0 )
+            if (lastVersion == 0)
             {
                 // This is a new install
                 resTitle = R.string.first_run_dialog_title;
                 resMessage = R.string.first_run_dialog_message;
-            }
-            else
+            } else
             {
                 // This is an upgrade.
                 resTitle = R.string.whats_new_dialog_title;
                 resMessage = R.string.whats_new_dialog_message;
             }
             // show what's new message
-            saveVersion( Constants.VERSION );
-            showWhatsNewDialog( resTitle , resMessage , R.drawable.icon );
+            saveVersion(Constants.VERSION);
+            showWhatsNewDialog(resTitle, resMessage, R.drawable.icon);
         }
     }
 
     private int getVersion()
     {
-        SharedPreferences prefs = getSharedPreferences( AbstractMainActivity.class.getName(), Activity.MODE_PRIVATE);
-        return prefs.getInt( KEY_VERSION , DEFAULT_VERSION );
+        SharedPreferences prefs = getSharedPreferences(AbstractMainActivity.class.getName(), Activity.MODE_PRIVATE);
+        return prefs.getInt(KEY_VERSION, DEFAULT_VERSION);
     }
 
-    private void saveVersion( int version )
+    private void saveVersion(int version)
     {
-        SharedPreferences prefs = getSharedPreferences( AbstractMainActivity.class.getName(), Activity.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(AbstractMainActivity.class.getName(), Activity.MODE_PRIVATE);
         Editor editor = prefs.edit();
-        editor.putInt( KEY_VERSION, version );
+        editor.putInt(KEY_VERSION, version);
         editor.commit();
 
     }
 
-    protected void showWhatsNewDialog( int title , int message, int icon)
+    protected void showWhatsNewDialog(int title, int message, int icon)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
-        builder.setIcon( icon );
+        builder.setIcon(icon);
         builder.setMessage(message);
         builder.setPositiveButton(getString(R.string.ok),
                 new DialogInterface.OnClickListener()
@@ -344,12 +356,11 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
                     public void onClick(DialogInterface dialog, int id)
                     {
                         dialog.cancel();
-                        newGame();
+                        onNewGame();
                     }
                 });
         AlertDialog alert = builder.create();
         alert.show();
 
     }
-
 }

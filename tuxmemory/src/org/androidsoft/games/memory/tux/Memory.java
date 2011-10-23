@@ -1,4 +1,4 @@
-/* Copyright (c) 2010 Pierre LEVY androidsoft.org
+/* Copyright (c) 2010-2011 Pierre LEVY androidsoft.org
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,6 +17,7 @@ package org.androidsoft.games.memory.tux;
 import android.content.SharedPreferences;
 import java.util.ArrayList;
 import java.util.List;
+import org.androidsoft.games.utils.sound.SoundManager;
 
 /**
  *
@@ -24,6 +25,8 @@ import java.util.List;
  */
 public class Memory
 {
+    private static final int SOUND_FAILED = 2000;
+    private static final int SOUND_SUCCEED = 2001;
 
     private static final String PREF_LIST = "list";
     private static final String PREF_MOVE_COUNT = "move_count";
@@ -42,6 +45,12 @@ public class Memory
     private static TileList mList = new TileList();
     private static int[] mTiles;
     private OnMemoryListener mListener;
+    
+    private static int[] mSounds = {
+      R.raw.blop, R.raw.chime, R.raw.chtoing, R.raw.tic, R.raw.toc, 
+      R.raw.toing, R.raw.toing2, R.raw.toing3, R.raw.toing4, R.raw.toing5,
+      R.raw.toing6, R.raw.toong, R.raw.tzirlup, R.raw.whiipz
+    };
 
     public Memory(int[] tiles , OnMemoryListener listener )
     {
@@ -64,6 +73,8 @@ public class Memory
             mLastPosition = prefs.getInt(PREF_LAST_POSITION, -1);
 
         }
+
+        initSounds();
     }
 
     void onPause(SharedPreferences preferences, boolean quit)
@@ -119,6 +130,16 @@ public class Memory
         }
     }
 
+    private void initSounds()
+    {
+        SoundManager.instance().addSound( SOUND_FAILED , R.raw.failed );
+        SoundManager.instance().addSound( SOUND_SUCCEED , R.raw.succeed );
+        for( int i = 0 ; i < mSounds.length ; i++ )
+        {
+            SoundManager.instance().addSound( i , mSounds[i] );
+        }
+    }
+
     public interface OnMemoryListener
     {
 
@@ -135,21 +156,29 @@ public class Memory
             return;
         }
         mLastPosition = position;
-        mList.get(position).select();
+        Tile tile = mList.get(position);
+        tile.select();
+        int sound = tile.mResId % mSounds.length;
+        SoundManager.instance().playSound( sound );
 
         switch (mSelectedCount)
         {
             case 0:
-                mT1 = mList.get(position);
+                mT1 = tile;
                 break;
 
             case 1:
-                mT2 = mList.get(position);
+                mT2 = tile;
                 if (mT1.getResId() == mT2.getResId())
                 {
                     mT1.setFound(true);
                     mT2.setFound(true);
                     mFoundCount += 2;
+                    SoundManager.instance().playSound( SOUND_SUCCEED );
+                }
+                else
+                {
+//                    SoundManager.instance().playSound( SOUND_FAILED );
                 }
                 break;
 
@@ -160,7 +189,7 @@ public class Memory
                     mT2.unselect();
                 }
                 mSelectedCount = 0;
-                mT1 = mList.get(position);
+                mT1 = tile;
                 break;
         }
         mSelectedCount++;

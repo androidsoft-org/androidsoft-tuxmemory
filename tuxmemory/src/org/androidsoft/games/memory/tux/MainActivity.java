@@ -1,4 +1,4 @@
-/* Copyright (c) 2010 Pierre LEVY androidsoft.org
+/* Copyright (c) 2010-2011 Pierre LEVY androidsoft.org
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +17,6 @@ package org.androidsoft.games.memory.tux;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import java.text.MessageFormat;
 
@@ -28,7 +27,6 @@ import java.text.MessageFormat;
 public class MainActivity extends AbstractMainActivity implements Memory.OnMemoryListener
 {
 
-    private static final String PREF_NOT_FOUND_RESID = "not_found_resid";
     private static final String PREF_BEST_MOVE_COUNT = "best_move_count";
     private static final int[] tiles =
     {
@@ -36,13 +34,12 @@ public class MainActivity extends AbstractMainActivity implements Memory.OnMemor
         R.drawable.item_3, R.drawable.item_4, R.drawable.item_5, R.drawable.item_6,
         R.drawable.item_7, R.drawable.item_8, R.drawable.item_9, R.drawable.item_10,
         R.drawable.item_11, R.drawable.item_12, R.drawable.item_13, R.drawable.item_14,
-        R.drawable.item_15, R.drawable.item_16, R.drawable.item_17, R.drawable.item_18 };
-    /*,
+        R.drawable.item_15, R.drawable.item_16, R.drawable.item_17, R.drawable.item_18,
         R.drawable.item_19, R.drawable.item_20, R.drawable.item_21, R.drawable.item_22,
         R.drawable.item_23, R.drawable.item_24, R.drawable.item_25, R.drawable.item_26,
         R.drawable.item_27, R.drawable.item_28, R.drawable.item_29, R.drawable.item_30,
-        R.drawable.item_31, R.drawable.item_32, R.drawable.item_33, R.drawable.item_34
-    };*/
+        R.drawable.item_31, R.drawable.item_32, R.drawable.item_33
+    };
     private static final int[] not_found_tile_set =
     {
         R.drawable.not_found_1, R.drawable.not_found_2

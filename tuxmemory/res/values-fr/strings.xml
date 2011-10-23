@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="app_name">"Memory"</string>
+    <string name="activity_title">"Tux Memory Game"</string>
+    <string name="success_title">"Bravo!"</string>
+    <string name="success">Votre score est de {0} déplacements.\n\nLe High Score est de {1} déplacements.</string>
+    <string name="hiscore_title">"Nouveau High Score!</string>
+    <string name="hiscore">Le nouveau High Score est de {0} déplacements. \n\nL\'\'ancien High Score était de {1} déplacements.</string>
+    <string name="new_game">"Nouveau jeu"</string>
+    <string name="quit">"Quitter"</string>
+    <string name="button_play">"Jouer"</string>
+    <string name="version">"Version 1.3"</string>
+    <string name="ok">Ok</string>
+    <!-- What's new dialog -->
+    <string name="first_run_dialog_title">Bienvenue dans Tux Memory Game</string>
+    <string name="first_run_dialog_message">Merci d\'avoir télécharger Tux Memory Game\n\n
+    Quick start instructions :\n
+    \t• Cliquer sur les pièces et trouver les paires.\n
+    \n\n Amusez-vous bien !\n
+    </string>
+    <string name="whats_new_dialog_title">Quoi de neuf dans Tux Memory Game</string>
+    <string name="whats_new_dialog_message">Merci de mettre à jour Tux Memory Game\n
+    <b>Nouveau dans la version 1.3:</b>\n
+    \t• Sons ajoutés.\n
+    \t• Un petit gnou, ami de Tux, a été ajouté .\n
+    \t• Toujours aucune pub ni accès internet requis.\n
+    \n\nAmusez-vous bien et n\'oubliez de nous encourager en laissant une évaluation.
+    </string>
+    <string name="credits_menu">A propos</string>
+    <string name="credits_app_name">Tux Memory Game</string>
+    <string name="credits_current_version">Version 1.3.0</string>
+
+</resources>
