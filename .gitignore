@@ -1,8 +1,6 @@
-/tuxmemory/gen/
-/tuxmemory/nbandroid/
-/tuxmemory/bin/
 /.nb-gradle/private/
 /build/
 /.gradle/
 /bin/
 /gen/
+/.idea/

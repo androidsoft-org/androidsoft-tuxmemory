@@ -134,7 +134,7 @@ public class MainActivity extends AbstractMainActivity implements Memory.OnMemor
     {
         SharedPreferences.Editor editor = getPreferences(0).edit();
         editor.putInt(PREF_BEST_MOVE_COUNT, nMoveCount);
-        editor.commit();
+        editor.apply();
     }
 
     /**

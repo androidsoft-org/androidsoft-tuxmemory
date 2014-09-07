@@ -96,7 +96,7 @@ public class Memory
             editor.remove(PREF_FOUND_COUNT);
             editor.remove(PREF_LAST_POSITION);
         }
-        editor.commit();
+        editor.apply();
     }
 
     int getCount()

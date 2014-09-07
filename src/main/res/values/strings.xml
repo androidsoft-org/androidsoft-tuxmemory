@@ -10,7 +10,7 @@
     <string name="quit">"Quit"</string>
     <string name="button_play">"Play"</string>
     <string name="version">"Version 1.3"</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <!-- What's new dialog -->
     <string name="first_run_dialog_title">Welcome to Tux Memory Game</string>
     <string name="first_run_dialog_message">Thanks for downloading Tux Memory Game\n\n

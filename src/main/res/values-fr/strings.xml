@@ -10,7 +10,7 @@
     <string name="quit">"Quitter"</string>
     <string name="button_play">"Jouer"</string>
     <string name="version">"Version 1.3"</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <!-- What's new dialog -->
     <string name="first_run_dialog_title">Bienvenue dans Tux Memory Game</string>
     <string name="first_run_dialog_message">Merci d\'avoir télécharger Tux Memory Game\n\n
@@ -29,5 +29,7 @@
     <string name="credits_menu">A propos</string>
     <string name="credits_app_name">Tux Memory Game</string>
     <string name="credits_current_version">Version 1.3.0</string>
+    
+    <string name="image_splash">Splash logo</string>
 
 </resources>

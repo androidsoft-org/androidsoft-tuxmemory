@@ -127,7 +127,7 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
         {
             editor.remove(PREF_STARTED);
         }
-        editor.commit();
+        editor.apply();
 
         SoundManager.release();
     }
@@ -339,7 +339,7 @@ public abstract class AbstractMainActivity extends Activity implements OnClickLi
         SharedPreferences prefs = getSharedPreferences(AbstractMainActivity.class.getName(), Activity.MODE_PRIVATE);
         Editor editor = prefs.edit();
         editor.putInt(KEY_VERSION, version);
-        editor.commit();
+        editor.apply();
 
     }
 

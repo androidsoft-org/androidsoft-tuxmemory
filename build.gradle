@@ -1,7 +1,8 @@
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
 
-
+dependencies {
+    compile fileTree( dir: 'libs', include:'*.jar' )
+}
 
 buildscript {
     repositories {
@@ -9,50 +10,20 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.0'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.+'
-
-
+        classpath 'com.android.tools.build:gradle:0.12.2'
     }
 }
 
 repositories {
     mavenCentral()
-    mavenLocal()
 }
-
-
-def AAVersion = '3.0.1'
-
-dependencies {
-    apt "org.androidannotations:androidannotations:$AAVersion"
-    compile "org.androidannotations:androidannotations-api:$AAVersion"
-}
-
-apt {
-    arguments {
-        androidManifestFile variant.processResources.manifestFile
-        resourcePackageName 'org.androidsoft.opendata.remarkabletrees'
-
-        // If you're using Android NBS flavors you should use the following line instead of hard-coded packageName
-        // resourcePackageName android.defaultConfig.packageName
-
-        // You can set optional annotation processing options here, like these commented options:
-        // logLevel 'INFO'
-        // logFile '/var/log/aa.log'
-    }
-}
-
 
 android {
-
-    //compileSdkVersion 19
-    compileSdkVersion "Google Inc.:Google APIs:19"
-
+    compileSdkVersion 20
     buildToolsVersion "19.1.0"
-
-    dependencies {
-        compile fileTree( dir: 'libs', include:'*.jar' )
+    
+    lintOptions {
+        enable 'UnusedIds', 'EasterEgg', 'NewerVersionAvailable'
     }
 }
 
